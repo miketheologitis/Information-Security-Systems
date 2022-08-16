@@ -1,0 +1,73 @@
+GCC version : gcc (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0
+Author: Michail Theologitis
+AM: 2017030043
+
+**************************Usage*************************************
+
+>make clean
+>make
+
+Usage:
+
+>assign_4 -g 
+>assign_4 -i in_file -o out_file -k key_file [-d | -e]
+>assign_4 -h
+
+Options:
+ -i    path    Path to input file
+ -o    path    Path to output file
+ -k    path    Path to key file
+ -d            Decrypt input and store results to output
+ -e            Encrypt input and store results to output
+ -g            Generates a keypair and saves to 2 files
+ -h            This help message
+
+
+***********************General*******************************************
+
+This was a fairly simple exercise so I will only emphasize on
+a few importand points. 
+
+The selection of p,q primes from the Seive of Eratosthenis is done
+in a cryptographically secure way using /dev/urandom .
+
+The modular multiplicative inverse of a,b is the number x where
+ax ≡ 1 (mod b). This is done using an adaptation of the Extended 
+Euclidian Algorithm where the Bézout coefficient of b is not
+computed because it is not needed.
+
+Modular Exponentation: x = (base)^(exponent) mod m,
+is calculated using a memory effiecient and quick way.
+Calculating (base)^(exponent) and then mod m, even though,
+modern computers are capable of doing this in a reasonably time,
+we have to take into consideration that if the exponent is
+in the range of 256-1024 bits which is often the case in RSA 
+(not in this Assignment) then the number (base)^(exponent)
+ becomes unwieldy. 
+ So, I used the identity:
+ (a ⋅ b) mod m = [(a mod m) ⋅ (b mod m)] mod m
+ and I computed the modular exponentation in a memory-safe 
+ and quicker way O(e).
+
+ There are some function for file I/O in utils.h/utils.c
+ but I don't think there is a need for explanation here.
+
+ Every function is properly commented and explained in 
+ the code.
+
+Lastly, everything runs perfectly.
+
+***********************Documentation***************************************
+
+In this assignment Wikipedia was a big help, explaing RSA, explaining and 
+offering quick solutions to math problems (mod inverse,
+modular exponentation etc.). Bellow is the documentation needed for some 
+of my function (there is also pseudocode which was very helpful, and
+the pseudocode was modified to my needs).
+
+https://en.wikipedia.org/wiki/RSA_(cryptosystem)
+https://en.wikipedia.org/wiki/RSA_problem
+https://en.wikipedia.org/wiki/Integer_factorization
+https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
+https://en.wikipedia.org/wiki/Modular_multiplicative_inverse
+https://en.wikipedia.org/wiki/B%C3%A9zout%27s_identity
