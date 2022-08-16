@@ -1,0 +1,110 @@
+GCC version : gcc (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0
+Author: Michail Theologitis
+AM: 2017030043
+
+*******************************USAGE*******************************************
+
+Please follow the correct order 1), 2), 3)
+
+1) About: creation of shared library, and all the executables
+
+>make clean
+>make
+
+2) About: "ransomware.sh"
+
+Example (Creation-Encryption-Decryption):
+
+>bash ransomware.sh -n file_directory -x 100 -c  //creation									 
+>bash ransomware.sh -n file_directory -x 100 -e  //encryption
+>bash ransomware.sh -n file_directory -x 100 -d  //decryption
+
+Usage:
+
+	bash ransomware.sh -n file_directory -x number_of_files [-c | -e | -d]
+
+Options:
+ -n    <file_directory>      The new directory which will be created 
+ 						     for all the files to be put inside it
+ 						     
+ -x    <number_of_files>     The <number_of_files> that will either be
+ 							 created, encrypted or decrypted	
+ 							 					     
+ -c                          Create <number_of_files> files inside
+ 						     <file_directory>.
+ 						     
+ -e            			     Encrypt the files inside <file_directory>
+                             (delete the original files aswell)"
+ 						     
+ -d            			     Decrypt the .encrypt files inside the
+ 						     <file_directory> (delete the .encrypt
+ 						     files aswell)
+ 
+ 
+ 3)	About "acmonitor.c"	
+ 		 
+Examples:
+
+>./acmonitor -m -i file_directory/filename -v 100 -e
+>./acmonitor -v 20 -e
+>./acmonitor -m -v 100 -e
+>./acmonitor -i file_directory/filename -v 100
+>./acmonitor -e
+ 						   
+Usage:
+
+	./acmonitor -m -i file_directory/filename -v number_of_files -e
+
+Options:
+ -m								   Prints malicious users
+ 
+ -i    <file_directory/filename>   Prints all users that modified the <filename>
+ 								   and the number of modifications.
+ 								   It's really IMPORTAND to put the input in this 
+ 								   exact manner. <file_directory> is the directory
+ 								   in which the <filename> file is/was stored.
+ 								   So, the input is expected as: <file_directory/filename>
+ 								   
+ -v       <number of files>	       Prints the total number of files created in 
+ 							       the last 20 minutes. if this number is smaller than the 
+ 							       <number of files>, then this does not indicate a suspicious 
+ 							       behavior. Othwerwise, it is suspicious.
+ 							       
+ -e                                Prints all the unencrypted files that were opened
+ 								   by the ransomware and then were encrypted.
+ 						  
+ -h								   Help message
+ 						   
+ 						   
+**********************************GENERAL******************************************************
+
+Bellow is an example of creating a new file directory called "new_file_directory" containing
+100 files, and then encrypting everything in "new_file_directory", and then decrypting 
+everything back. Then using acmonitor.c to check how many files were created (with 
+a suspicious bound of 50 file creations), and also printing out all the files that were 
+encrypted, and also checking all file modification of file "file_0.txt".
+
+>make clean
+>make
+>bash ransomware.sh -n new_file_directory -x 100 -c 									 
+>bash ransomware.sh -n new_file_directory -x 100 -e  
+>bash ransomware.sh -n new_file_directory -x 100 -d 
+>./acmonitor -i new_file_directory/file_0.txt -v 50 -e 
+
+
+The way I create the initial files "bash ransomware -n new_file_dir -x X -c" is that
+I call the "./test_aclog new_file_dir X" which uses fopen() to create X files to "new_file_dir",
+and write to them, using fwrite() the new_file_dir/filename in each.
+
+Example: If -c 1000 , we want to create 1000 files, the files will be called
+file_0.txt, file_1.txt, ... , file_999.txt
+
+
+IMPORTAND:
+
+logger.c has been enriched with fopen64 for ssl binaries to use.
+
+
+
+
+
